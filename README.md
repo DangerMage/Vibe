@@ -14,7 +14,7 @@ Create a new directory called `rules`, or you can copy `sample-rules` with it. E
 
 At the start of each file it has to include on the first line a `TYPE: <type here>` line, and following a line that contains `---`. Blank lines will not be read, or lines starting with a `#`.
 
-Valid types are: `FILTER`, `IGNORE`.
+Valid types are: `FILTER_REGEX`, `FILTER_REGEX_LOWER`, `IGNORE`.
 
 Example:
 ```

@@ -3,7 +3,7 @@ from discord.ext import commands
 import bot as bot_global
 
 
-class MessageFilter:
+class MessageFilter(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot

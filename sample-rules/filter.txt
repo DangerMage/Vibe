@@ -1,2 +1,5 @@
-TYPE: RULES
+TYPE: FILTER_REGEX_LOWER
+Case insensitive searching!
 -----
+# Filters out crap
+(c+(\W|\d|_|)*r+(\W|\d|_)*a+(\W|\d|_)*p+(\W|\d|_)*)

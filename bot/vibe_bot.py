@@ -14,12 +14,13 @@ The ultimate chat control discord bot.
 
 cogs_dir = "bot.cogs"
 
-startup_extensions = "message_filter"
+startup_extensions = ["message_filter", "utility"]
 
 
 class VibeBot(commands.Bot):
 
     def __init__(self):
+        print("Loading bot...")
         bot.config = Config("config.json")
         bot.main_filter = FilterHandler()
 
@@ -44,4 +45,4 @@ class VibeBot(commands.Bot):
         super().run(bot.config['bot_token'], reconnect=True, bot=True)
 
     async def on_ready(self):
-        print("Bot booted!")
+        print("Bot up and running!")

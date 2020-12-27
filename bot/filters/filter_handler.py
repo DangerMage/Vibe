@@ -21,16 +21,14 @@ class FilterHandler:
         self.rules_dir = pathlib.Path("./rules")
         self.ignore = []
         self.filter_regex = []
+        self.filter_regex_lower = []
         self.load()
 
     def filter(self, message):
         true_matches = []
-        for r in self.filter_regex:
-            matches = re.search(r, message)
-            if matches:
-                for found in matches.group():
-                    if found.lower() not in self.ignore:
-                        true_matches.append(found)
+        print(f"Searching {message}")
+        true_matches.extend(self.search(message, self.filter_regex, self.ignore))
+        true_matches.extend(self.search(message.lower(), self.filter_regex_lower, self.ignore))
 
         if len(true_matches) == 0:
             return None
@@ -42,6 +40,7 @@ class FilterHandler:
         p = self.rules_dir.glob("**/*.txt")
         files = [x for x in p if x.is_file()]
         for f in files:
+            print(f"Loading file: {str(f)}")
             try:
                 data = f.read_text()
             except Exception:
@@ -51,9 +50,27 @@ class FilterHandler:
             if "TYPE: IGNORE" in lines[0]:
                 self.ignore_file(lines)
                 continue
-            if "TYPE: RULES":
-                self.filter_file(lines)
+            if "TYPE: FILTER_REGEX_LOWER" in lines[0]:
+                self.filter_file(lines, True)
                 continue
+            if "TYPE: FILTER_REGEX" in lines[0]:
+                self.filter_file(lines, False)
+                continue
+
+    @classmethod
+    def search(cls, message, regex_list, ignore):
+        true_matches = []
+        for r in regex_list:
+            matches = re.findall(r, message)
+            for found in matches:
+                if not isinstance(found, tuple):
+                    found = [found]
+                for f in found:
+                    if f is None:
+                        continue
+                    if f.lower() not in ignore:
+                        true_matches.append(f)
+        return true_matches
 
     @classmethod
     def raw_lines(cls, lines):
@@ -75,11 +92,15 @@ class FilterHandler:
             return
         self.ignore.extend([l.lower() for l in lines])
 
-    def filter_file(self, lines):
+    def filter_file(self, lines, lower):
         lines = self.raw_lines(lines)
         for l in lines:
             try:
                 l_regex = re.compile(l)
-                self.filter_regex.append(l_regex)
+                if lower:
+                    self.filter_regex_lower.append(l_regex)
+                else:
+                    self.filter_regex.append(l_regex)
+
             except Exception as e:
                 print(f"Could not add regex: {l}\n\n{e}")
