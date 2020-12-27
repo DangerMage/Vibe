@@ -1,4 +1,5 @@
 import pathlib
+import re
 import traceback
 
 
@@ -21,6 +22,20 @@ class FilterHandler:
         self.ignore = []
         self.filter_regex = []
         self.load()
+
+    def filter(self, message):
+        true_matches = []
+        for r in self.filter_regex:
+            matches = re.search(r, message)
+            if matches:
+                for found in matches.group():
+                    if found.lower() not in self.ignore:
+                        true_matches.append(found)
+
+        if len(true_matches) == 0:
+            return None
+
+        return Filtered(message, true_matches)
 
     def load(self):
         # Get all tet files from directory.
@@ -62,3 +77,9 @@ class FilterHandler:
 
     def filter_file(self, lines):
         lines = self.raw_lines(lines)
+        for l in lines:
+            try:
+                l_regex = re.compile(l)
+                self.filter_regex.append(l_regex)
+            except Exception as e:
+                print(f"Could not add regex: {l}\n\n{e}")
