@@ -20,6 +20,7 @@ class FilterHandler:
         self.rules_dir = pathlib.Path("./rules")
         self.ignore = []
         self.filter_regex = []
+        self.load()
 
     def load(self):
         # Get all tet files from directory.
