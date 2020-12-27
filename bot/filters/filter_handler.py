@@ -19,6 +19,7 @@ class FilterHandler:
     def __init__(self):
         self.rules_dir = pathlib.Path("./rules")
         self.ignore = []
+        self.filter_regex = []
 
     def load(self):
         # Get all tet files from directory.
@@ -35,7 +36,7 @@ class FilterHandler:
                 self.ignore_file(lines)
                 continue
             if "TYPE: RULES":
-                self.rules_file(lines)
+                self.filter_file(lines)
                 continue
 
     @classmethod
@@ -56,4 +57,7 @@ class FilterHandler:
         lines = self.raw_lines(lines)
         if len(lines) == 0:
             return
-        self.ignore.extend(lines)
+        self.ignore.extend([l.lower() for l in lines])
+
+    def filter_file(self, lines):
+        lines = self.raw_lines(lines)
