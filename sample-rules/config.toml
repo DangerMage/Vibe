@@ -1,0 +1,43 @@
+# ----------------------------------
+# Global Configuration
+#
+# There are values that are nice and easy to configure using this file format.
+# The default values are shown below.
+# This file can be named whatever, and can have filters in it. This just creates a dictionary named 'globals' internally.
+# Having 'globals' in multiple places will throw an error.
+# ----------------------------------
+
+[globals]
+    # If it will send a DM to the person who triggered the filter.
+    warn_message.dm = true
+
+    # What channel it will send the trigger embed to also. DM's can be on. To disable leave 0 (use discord channel ID)
+    warn_message.channel = 0
+
+    # What message gets sent when a filter was triggered. Use {original} for the original message and {triggers} for the trigger words.
+    # Original will only show up to 1k characters since embeds can only have 2k characters.
+    warn_message.text = """
+    Hey! I found an inappropriate word in your message. Please be a bit nicer :)
+
+    **Original Message**
+    {original}
+
+    **Trigger Word(s)**
+    {triggers}
+    """
+
+    # What the title on the embed says.
+    warn_message.title = "You triggered the filter!"
+
+    # What the footer on the embed says.
+    warn_message.footer = "If you believe this was a mistake, please contact a staff member."
+
+    # You can declare as many as you need.
+    # (i.e. ["crape", "DarkKronicle", "bruh"])
+    ignores = []
+
+    # Case insensitive ignores
+    ignores_ci = true
+
+    # Type of ignores. 'literal' or 'regex'
+    ignores_type = 'literal'

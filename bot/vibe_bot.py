@@ -22,7 +22,7 @@ class VibeBot(commands.Bot):
     def __init__(self):
         print("Loading bot...")
         bot.config = Config("config.json")
-        bot.main_filter = FilterHandler()
+        bot.main_filter = FilterHandler(self)
 
         allowed_mentions = discord.AllowedMentions(roles=False, everyone=False, users=True)
 

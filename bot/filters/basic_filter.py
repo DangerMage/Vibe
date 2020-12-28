@@ -1,5 +1,7 @@
 import re
 
+import bot.filters.filter_handler as handler
+
 
 class BaseFilter:
 
@@ -18,7 +20,7 @@ class BasicFilter(BaseFilter):
             raise ValueError("Ignore Ignore Case must be a boolean")
         if search_text is None or len(search_text) == 0:
             raise ValueError("Search text has to exist!")
-        if not search_regex:
+        if search_regex == handler.FilterType.literal:
             search_text = re.escape(search_text)
         if search_ci:
             self.search = re.compile(search_text, flags=re.IGNORECASE)
@@ -31,7 +33,7 @@ class BasicFilter(BaseFilter):
         if isinstance(ignore_text, list):
             to_add = []
             for ig in ignore_text:
-                if not ignore_regex:
+                if ignore_regex == handler.FilterType.literal:
                     irrex = re.escape(ig)
                 else:
                     irrex = ignore_text
@@ -41,7 +43,7 @@ class BasicFilter(BaseFilter):
                     to_add.append(re.compile(irrex))
             self.ignore = to_add
         else:
-            if not ignore_regex:
+            if ignore_regex == handler.FilterType.literal:
                 ignore_text = re.escape(ignore_text)
             if ignore_ci:
                 self.ignore = [re.compile(ignore_text, flags=re.IGNORECASE)]
@@ -49,6 +51,9 @@ class BasicFilter(BaseFilter):
                 self.ignore = [re.compile(ignore_text)]
 
     def filter_message(self, message):
+        # Sometimes with big ignore lists it can be more taxing to iterate through everything.
+        if self.ignore is not None and len(re.findall(self.search, message)) == 0:
+            return []
         true_matches = []
         if self.ignore is not None:
             for i in self.ignore:
