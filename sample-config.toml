@@ -1,4 +1,18 @@
 # Static configuration for the bot. These don't affect the filters, that is all in 'sample-rules' and 'rules'.
 # Make sure you copy this file into 'config.toml' and configure it there.
 
+# RELOAD COMMAND DOES NOT RELOAD THIS
+
 bot_token = "TOKEN HERE"
+
+# Bot prefix for commands (there aren't many)
+bot_prefix = "!"
+
+# Required for bot manager role
+bot_guild = 0
+
+# Discord ID of a role to allow for managing the bot. You can use !reload. Leave 0 for none.
+bot_manager_role = 0
+
+# Bot owner
+owner_id = 0

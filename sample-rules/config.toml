@@ -5,23 +5,28 @@
 # The default values are shown below.
 # This file can be named whatever, and can have filters in it. This just creates a dictionary named 'globals' internally.
 # Having 'globals' in multiple places will throw an error.
+#
+# THIS FILE IS NOT THE SAME AS THE config.toml IN THE ROOT DIRECTORY
 # ----------------------------------
 
 [globals]
 
     # Whether it will stop searching once one is found. If you want to find every problem in a message leave this true.
     # Recommended to be false if you have tons of words.
-    find_all = true
+    filter.find_all = true
 
     # If it will send a DM to the person who triggered the filter.
-    warn_message.dm = true
+    filter.warn_message.dm = true
 
-    # What channel it will send the trigger embed to also. DM's can be on. To disable leave 0 (use discord channel ID)
-    warn_message.channel = 0
+    # What channel it will send a log message to. DM's can be on. To disable leave 0 (use discord channel ID)
+    filter.warn_message.channel = 0
+
+    # Type that the log message will be. 'compact' 'compact_embed' 'embed'
+    filter.warn_message.log_type = 'compact'
 
     # What message gets sent when a filter was triggered. Use {original} for the original message and {triggers} for the trigger words.
     # Original will only show up to 1k characters since embeds can only have 2k characters.
-    warn_message.text = """
+    filter.warn_message.text = """
     Hey! I found an inappropriate word in your message. Please be a bit nicer :)
 
     **Original Message**
@@ -32,17 +37,17 @@
     """
 
     # What the title on the embed says.
-    warn_message.title = "You triggered the filter!"
+    filter.warn_message.title = "You triggered the filter!"
 
     # What the footer on the embed says.
-    warn_message.footer = "If you believe this was a mistake, please contact a staff member."
+    filter.warn_message.footer = "If you believe this was a mistake, please contact a staff member."
 
     # You can declare as many as you need.
     # (i.e. ["crape", "DarkKronicle", "bruh"])
-    ignores = []
+    filter.ignores = []
 
     # Case insensitive ignores
-    ignores_ci = true
+    filter.ignores_ci = true
 
     # Type of ignores. 'literal' or 'regex'
-    ignores_type = 'literal'
+    filter.ignores_type = 'literal'

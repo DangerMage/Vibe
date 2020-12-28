@@ -1,6 +1,8 @@
 # Sample configuration for how filters will work and are processed.
 # If you're new to TOML look at https://toml.io/en/v1.0.0-rc.3
 
+# There are 'sets' in this file.
+# Sets are arrays of tables that include configurable options. They are declared by [[set_name]]
 # ----------------------------------
 # Filter customization
 #
@@ -15,10 +17,14 @@
 #   ignore_type      - Whether it will read ignore_text as regex, or just plain old text. 'literal' or 'regex'.
 #   ignore_ci        - Whether the ignore search will be case insensitive.
 #
+#   priority         - Should it be processed near the front? Or the last? Good if you have really uncommon words.
+#                      - The lower the number the quicker it gets processed.
+#                      - Only supports numbers from 1-5.
+#
 #   If search text field is left blank, the filter will not register, and will flag a warning.
 # ----------------------------------
 
-[defaults]
+[filter_defaults]
     # These are values that will be applied to all the filters *in this file*. They can be overriden by each
     # individual filter. This is optional. The current ones displayed are the natural defaults.
     search_text = ''
@@ -27,6 +33,7 @@
     ignore_text = ''
     ignore_type = 'literal'
     ignore_ci = false
+    priority = 3
 
 
 [[filter]]
@@ -40,3 +47,5 @@
     # Filters out bruh
     search_text = '''bruh'''
     search_type = 'literal'
+    # Bruh is literally said every message. So this one should go first.
+    priority = 5

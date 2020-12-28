@@ -12,8 +12,16 @@ class MessageFilter(commands.Cog):
     async def on_message(self, message):
         if message.guild is None or message.author == self.bot.user:
             return
+        await self.filter_message(message)
 
-        filtered = bot_global.main_filter.filter(message.clean_content)
+    @commands.Cog.listener()
+    async def on_message_edit(self, before, after):
+        if after.guild is None or after.author == self.bot.user:
+            return
+        await self.filter_message(after)
+
+    async def filter_message(self, message):
+        filtered = bot_global.main_filter.filter_message(message.clean_content)
         if filtered is None:
             return
 
@@ -28,15 +36,15 @@ class MessageFilter(commands.Cog):
             human = message.clean_content
         human.replace(r"{original}", "!original!")
         human.replace(r"{triggers}", "!triggers!")
-        problems = '\n'.join(filtered.problems)
+        problems = '\n'.join(filtered)
         config = bot_global.main_filter.config
         embed = discord.Embed(
-            title=config.embed_title,
-            description=config.embed_text.replace(r"{original}", human).replace(r"{triggers}", problems),
+            title=config.get("filter", "warn_message", "title"),
+            description=config.get("filter", "warn_message", "text").replace(r"{original}", human).replace(r"{triggers}", problems),
             colour=discord.Colour.red()
         )
         embed.set_author(name=str(message.author), icon_url=message.author.avatar_url)
-        embed.set_footer(text=config.embed_footer)
+        embed.set_footer(text=config.get("filter", "warn_message", "footer"))
         try:
             await message.author.send(embed=embed)
         except Exception:
