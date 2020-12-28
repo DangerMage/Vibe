@@ -34,9 +34,11 @@ class FilterConfig:
         self.channel = None
         self.ignores = []
         self.bot = bot
+        self.find_all = True
         self.update_from_dict({})
 
     def update_from_dict(self, update):
+        self.find_all = update.get('find_all', True)
         warn = update.get('warn_message', {})
         self.embed_footer = warn.get('footer', "If you believe this was a mistake, please contact a staff member.")
         self.embed_text = warn.get('text', "Hey! I found an inappropriate word in your message. Please be a bit nicer :) \
@@ -82,7 +84,11 @@ class FilterHandler:
         for i in self.config.ignores:
             message = re.sub(i, "", message)
         for filt in self.filters:
-            true_matches.extend(filt.filter_message(message))
+            matches = filt.filter_message(message)
+            if len(matches) > 0:
+                true_matches.extend(filt.filter_message(message))
+                if not self.config.find_all:
+                    break
 
         if len(true_matches) == 0:
             return None

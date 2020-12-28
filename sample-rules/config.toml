@@ -8,6 +8,11 @@
 # ----------------------------------
 
 [globals]
+
+    # Whether it will stop searching once one is found. If you want to find every problem in a message leave this true.
+    # Recommended to be false if you have tons of words.
+    find_all = true
+
     # If it will send a DM to the person who triggered the filter.
     warn_message.dm = true
 
