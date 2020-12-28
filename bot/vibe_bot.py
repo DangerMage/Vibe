@@ -1,5 +1,7 @@
 import traceback
 from datetime import datetime
+from pathlib import Path
+
 from discord.ext import commands
 
 import discord
@@ -21,7 +23,7 @@ class VibeBot(commands.Bot):
 
     def __init__(self):
         print("Loading bot...")
-        bot.config = Config("config.json")
+        bot.config = Config(Path("./config.toml"))
         bot.main_filter = FilterHandler(self)
 
         allowed_mentions = discord.AllowedMentions(roles=False, everyone=False, users=True)

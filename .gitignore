@@ -1,5 +1,5 @@
-/config.json
-config.json
+/config.toml
+config.toml
 /venv
 /rules
 __pycache__

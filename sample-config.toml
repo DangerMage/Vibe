@@ -1,0 +1,4 @@
+# Static configuration for the bot. These don't affect the filters, that is all in 'sample-rules' and 'rules'.
+# Make sure you copy this file into 'config.toml' and configure it there.
+
+bot_token = "TOKEN HERE"

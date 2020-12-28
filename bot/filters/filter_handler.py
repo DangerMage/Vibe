@@ -87,6 +87,7 @@ class FilterHandler:
             matches = filt.filter_message(message)
             if len(matches) > 0:
                 true_matches.extend(filt.filter_message(message))
+                # We already found a trigger so if we don't want to find all, we can stop.
                 if not self.config.find_all:
                     break
 

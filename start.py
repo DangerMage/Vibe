@@ -1,5 +1,5 @@
 """
-Run this file to initate the bot. Make sure you have setup the bot token in config.json.
+Run this file to initate the bot. Make sure you have setup the bot token in config.toml.
 """
 
 
