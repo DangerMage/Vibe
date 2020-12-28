@@ -1,0 +1,16 @@
+# Just another configuration file. Check out filter.toml first :P
+# (This one is pretty useless)
+
+[defaults]
+    search_type = 'literal'
+    search_ci = true
+    ignore_ci = true
+
+
+[[filter]]
+    # Be proper and use hello once in a while!
+    search_text = 'hi'
+
+[[filter]]
+    # For those weirdos who don't like 'pog'
+    search_text = 'pog'

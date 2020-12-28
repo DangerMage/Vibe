@@ -1,0 +1,42 @@
+# Sample configuration for how filters will work and are processed.
+# If you're new to TOML look at https://toml.io/en/v1.0.0-rc.3
+
+# ----------------------------------
+# Filter customization
+#
+# To declare a new filter, use [[filter]] to initate a new one (they're an array of tables)
+# Each one has a couple fields
+#   search_text      - The contents of the search. For ease of use declare one by using triple quotation marks. '''Search this text'''
+#   search_type      - Whether it will read the search_text as just plain text, or a regular expression.
+#                      - Can be either 'literal' or 'regex'. Case insensitive.
+#   search_ci        - Whether the search will be case insensitive.
+#   ignore_text      - What it will ignore if it finds. Use triple quotation marks as before. '''Ignore me!'''
+#                      - You can create an array with ignore_text. ['one', 'two', 'three']
+#   ignore_type      - Whether it will read ignore_text as regex, or just plain old text. 'literal' or 'regex'.
+#   ignore_ci        - Whether the ignore search will be case insensitive.
+#
+#   If search text field is left blank, the filter will not register, and will flag a warning.
+# ----------------------------------
+
+[defaults]
+    # These are values that will be applied to all the filters *in this file*. They can be overriden by each
+    # individual filter. This is optional. The current ones displayed are the natural defaults.
+    search_text = ''
+    search_type = 'regex'
+    search_ci = false
+    ignore_text = ''
+    ignore_type = 'literal'
+    ignore_ci = false
+
+
+[[filter]]
+    # Filters out crap
+    search_text = '''(c+(\W|\d|_|)*r+(\W|\d|_)*a+(\W|\d|_)*p+(\W|\d|_)*)'''
+    search_ci = true
+    ignore_text = 'crape'
+    ignore_ci = true
+
+[[filter]]
+    # Filters out bruh
+    search_text = '''bruh'''
+    search_type = 'literal'

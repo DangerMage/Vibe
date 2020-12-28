@@ -10,8 +10,14 @@ class Utility(commands.Cog):
     @commands.command(name="filtered")
     @commands.is_owner()
     async def filtered_list(self, ctx):
-        message = '\n'.join([p.pattern for p in bot_global.main_filter.filter_regex])
+        message = '\n'.join([p for p in bot_global.main_filter.filters])
         await ctx.send(message)
+
+    @commands.command(name="reload")
+    @commands.is_owner()
+    async def reload_filters(self, ctx):
+        bot_global.main_filter.load()
+        await ctx.send("Loaded!")
 
 
 def setup(bot):
