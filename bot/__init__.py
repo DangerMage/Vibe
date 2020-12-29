@@ -10,8 +10,8 @@ guild = None
 
 
 def bot_manager():
-    def predicate(ctx):
-        if ctx.bot.is_owner(ctx.author):
+    async def predicate(ctx):
+        if await ctx.bot.is_owner(ctx.author):
             return True
         if manager_role is not None:
             return manager_role in ctx.author.roles

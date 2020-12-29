@@ -4,6 +4,7 @@ import traceback
 import toml
 import enum
 
+from bot.cogs.message_filter import MessageType
 from bot.filters.basic_filter import BasicFilter
 from bot.util.custom_dicts import DefaultDict
 
@@ -45,6 +46,7 @@ class GlobalConfig(DefaultDict):
                             "\n{triggers}",
                     "title": "You triggered the filter!",
                     "channel": 0,
+                    "log_type": "compact"
                 },
                 "ignores_ci": True,
                 "ignores": [],
@@ -56,11 +58,13 @@ class GlobalConfig(DefaultDict):
         super().__init__()
         self.bot = bot
         self.channel = None
+        self.log_type = MessageType.compact
         self.ignores = []
 
     def update(self, update):
         super().update(update)
         self.channel = self.bot.get_channel(self.get("filter", "warn_message", "channel"))
+        self.log_type = MessageType[self.get("filter", "warn_message", "log_type")]
         ic = self.get("filter", "ignores_ci")
         ignores = self.get("filter", "ignores")
         is_regex = FilterType[self.get("filter", "ignores_type")] == FilterType.regex

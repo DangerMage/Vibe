@@ -20,7 +20,7 @@ class BasicFilter(BaseFilter):
             raise ValueError("Ignore Ignore Case must be a boolean")
         if search_text is None or len(search_text) == 0:
             raise ValueError("Search text has to exist!")
-        if search_regex == handler.FilterType.literal:
+        if search_regex.value == handler.FilterType.literal.value:
             search_text = re.escape(search_text)
         if search_ci:
             self.search = re.compile(search_text, flags=re.IGNORECASE)
@@ -33,7 +33,7 @@ class BasicFilter(BaseFilter):
         if isinstance(ignore_text, list):
             to_add = []
             for ig in ignore_text:
-                if ignore_regex == handler.FilterType.literal:
+                if ignore_regex.value == handler.FilterType.literal.value:
                     irrex = re.escape(ig)
                 else:
                     irrex = ignore_text
@@ -43,7 +43,7 @@ class BasicFilter(BaseFilter):
                     to_add.append(re.compile(irrex))
             self.ignore = to_add
         else:
-            if ignore_regex == handler.FilterType.literal:
+            if ignore_regex.value == handler.FilterType.literal.value:
                 ignore_text = re.escape(ignore_text)
             if ignore_ci:
                 self.ignore = [re.compile(ignore_text, flags=re.IGNORECASE)]
