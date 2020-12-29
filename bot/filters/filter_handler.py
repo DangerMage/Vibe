@@ -24,7 +24,7 @@ class MessageType(enum.Enum):
                 human = message.clean_content
             human.replace(r"{original}", "!original!")
             human.replace(r"{triggers}", "!triggers!")
-            problems = '\n'.join([t for t in triggered if len(t) != 1])
+            problems = '\n'.join([t for t in triggered if t is not None and len(t) > 0])
             config = bot_global.custom_config
             embed = discord.Embed(
                 title=config.get("filter", "warn_message", "title"),
@@ -36,13 +36,13 @@ class MessageType(enum.Enum):
             embed.set_footer(text=config.get("filter", "warn_message", "footer"))
             return embed
         if message_type.value == MessageType.compact.value:
-            problems = '` '.join([t for t in triggered if len(t) != 1])
+            problems = '` '.join([t for t in triggered if t is not None and len(t) > 0])
             human = message.clean_content
             if len(human) > 1200:
                 human = human[:1200]
             return f"__Message from {message.author} triggered filter.__\nTriggered: `{problems}`\nOriginal: {human}"
         if message_type.value == MessageType.compact_embed.value:
-            problems = '` '.join([t for t in triggered if len(t) != 1])
+            problems = '` '.join([t for t in triggered if t is not None and len(t) > 0])
             human = message.clean_content
             if len(human) > 1200:
                 human = human[:1200]
