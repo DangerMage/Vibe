@@ -20,12 +20,7 @@ class BasicFilter(BaseFilter):
             raise ValueError("Ignore Ignore Case must be a boolean")
         if search_text is None or len(search_text) == 0:
             raise ValueError("Search text has to exist!")
-        if search_regex.value == handler.FilterType.literal.value:
-            search_text = re.escape(search_text)
-        if search_ci:
-            self.search = re.compile(search_text, flags=re.IGNORECASE)
-        else:
-            self.search = re.compile(search_text)
+        self.search = handler.FilterType.compile_regex(search_regex, search_text, search_ci)
         if ignore_text is None or len(ignore_text) == 0:
             self.ignore = None
             return
@@ -33,22 +28,10 @@ class BasicFilter(BaseFilter):
         if isinstance(ignore_text, list):
             to_add = []
             for ig in ignore_text:
-                if ignore_regex.value == handler.FilterType.literal.value:
-                    irrex = re.escape(ig)
-                else:
-                    irrex = ignore_text
-                if search_ci:
-                    to_add.append(re.compile(irrex, flags=re.IGNORECASE))
-                else:
-                    to_add.append(re.compile(irrex))
+                to_add.append(handler.FilterType.compile_regex(ignore_regex, ig, ignore_ci))
             self.ignore = to_add
         else:
-            if ignore_regex.value == handler.FilterType.literal.value:
-                ignore_text = re.escape(ignore_text)
-            if ignore_ci:
-                self.ignore = [re.compile(ignore_text, flags=re.IGNORECASE)]
-            else:
-                self.ignore = [re.compile(ignore_text)]
+            self.ignore = [handler.FilterType.compile_regex(ignore_regex, ignore_text, ignore_ci)]
 
     def filter_message(self, message):
         # Sometimes with big ignore lists it can be more taxing to iterate through everything.

@@ -5,6 +5,9 @@ import pathlib
 
 
 class Config:
+    """
+    Basically reads a toml file and then provides a nice interface with it.
+    """
 
     def __init__(self, file: pathlib.Path):
         self.file = file

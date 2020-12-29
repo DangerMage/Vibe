@@ -7,8 +7,9 @@ from discord.ext import commands
 import discord
 
 import bot
-from bot.filters.filter_handler import FilterHandler
-from bot.util.config import Config
+import bot.filters.filter_handler as fh
+import bot.util.config as util_config
+import bot.file_manager
 
 description = """
 The ultimate chat control discord bot.
@@ -23,7 +24,7 @@ class VibeBot(commands.Bot):
 
     def __init__(self):
         print("Loading bot...")
-        bot.config = Config(Path("./config.toml"))
+        bot.config = util_config.Config(Path("./config.toml"))
 
         allowed_mentions = discord.AllowedMentions(roles=False, everyone=False, users=True)
 
@@ -56,5 +57,7 @@ class VibeBot(commands.Bot):
         raise error
 
     async def on_ready(self):
-        bot.main_filter = FilterHandler(self)
+        bot.custom_config = bot.file_manager.GlobalConfig(self)
+        bot.main_filter = fh.FilterHandler(self)
+        bot.file_manager.FileProcessor.load()
         print("Bot up and running!")

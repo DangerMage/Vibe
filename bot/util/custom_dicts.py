@@ -1,4 +1,7 @@
 class WalkableDict:
+    """
+    Easy walking through dictionaries with sub dictionaries within them.
+    """
 
     def __init__(self, keys, value):
         self.keys = keys
@@ -12,32 +15,38 @@ class WalkableDict:
         return self.keys, self.value
 
     @classmethod
-    def create_walkable(cls, dictionary, keys=None):
+    def create_walkable(cls, dictionary, keys=None, unpack=True):
         if keys is None:
             keys = []
         for k, v in dictionary.items():
             if isinstance(v, dict):
-                yield from cls.create_walkable(v, keys + [k])
+                yield from cls.create_walkable(v, keys + [k], unpack)
             else:
-                yield cls(keys + [k], v).items()
+                if unpack:
+                    yield cls(keys + [k], v).items()
+                else:
+                    yield cls(keys + [k], v)
 
 
 class DefaultDict:
 
     def __init__(self):
-        self._data = self.defaults
-
-    def get_dict(self):
-        return self._data
+        self.data = self.defaults
 
     @property
     def defaults(self):
+        """
+        Get the default dictionary.
+        """
         raise NotImplementedError
 
     def update(self, update_dict):
-        for keys, value in WalkableDict.create_walkable(self._data.copy()):
+        """
+        Update the current dictionary with another one. It will only change values that already exist in this dict.
+        """
+        for keys, value in WalkableDict.create_walkable(self.data.copy()):
             try:
-                current_data = self._data
+                current_data = self.data
                 current_update = update_dict
                 if len(keys) == 1:
                     current_data[keys[0]] = current_update[keys[0]]
@@ -51,14 +60,17 @@ class DefaultDict:
                 continue
 
     def get(self, *args):
+        """
+        Gets an object from the dictionary. args allows you to easily go into nested dicts.
+        """
         if len(args) == 1:
             try:
-                return self._data[args[0]]
+                return self.data[args[0]]
             except KeyError:
                 return None
         nest = args[:-1]
         key = args[-1]
-        current = self._data
+        current = self.data
         for item in nest:
             try:
                 current = current[item]

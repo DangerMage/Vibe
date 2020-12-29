@@ -1,5 +1,6 @@
 from discord.ext import commands
 import bot as bot_global
+from bot.file_manager import FileProcessor
 
 
 class Utility(commands.Cog):
@@ -17,7 +18,7 @@ class Utility(commands.Cog):
     @bot_global.bot_manager()
     async def reload_filters(self, ctx):
         """Reloads filters"""
-        bot_global.main_filter.load()
+        FileProcessor.load()
         await ctx.send("Reloaded!")
 
 
