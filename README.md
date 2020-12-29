@@ -1,10 +1,10 @@
 # Vibe
 
-A super awesome discord chat bot to filter chat.
+A super awesome discord moderation bot to filter chat. The main goal is to make everything configurable just from `config.toml` and the `sample-rules` directory.
 
 ## Configuration
 
-Make sure to copy `sample-config.json` into a new file file called `config.json` and fill in the respective values.
+Make sure to copy `sample-config.toml` into a new file file called `config.toml` and fill in the respective values.
 
 ### Rules
 
