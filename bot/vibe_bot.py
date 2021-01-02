@@ -45,9 +45,6 @@ class VibeBot(commands.Bot):
 
     def run(self):
         super().run(bot.config['bot_token'], reconnect=True, bot=True)
-        bot.guild = self.get_guild(bot.config['bot_guild'])
-        if bot.guild is not None:
-            bot.manager_role = bot.guild.get_role(bot.config['bot_manager_role'])
 
     async def on_command_error(self, ctx, error):
         if isinstance(error, commands.CommandNotFound):
@@ -60,4 +57,9 @@ class VibeBot(commands.Bot):
         bot.custom_config = bot.file_manager.GlobalConfig(self)
         bot.main_filter = fh.FilterHandler(self)
         bot.file_manager.FileProcessor.load()
+        bot.guild = self.get_guild(bot.config['bot_guild'])
+        if bot.guild is not None:
+            bot.manager_role = bot.guild.get_role(bot.config['bot_manager_role'])
+            if bot.manager_role is not None:
+                print("Found bot manager role")
         print("Bot up and running!")

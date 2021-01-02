@@ -10,13 +10,13 @@ import bot as bot_global
 
 
 class MessageType(enum.Enum):
-
     compact = 0
     compact_embed = 1
     embed = 2
 
     @classmethod
     def format_embed(cls, message_type, message, triggered):
+        """Formats the message of a filter trigger."""
         if message_type.value == MessageType.embed.value:
             if len(message.clean_content) > 1000:
                 human = message.clean_content[:1000]
@@ -55,7 +55,6 @@ class MessageType(enum.Enum):
 
 
 class FilterType(enum.Enum):
-
     regex = 0
     literal = 1
 
@@ -136,15 +135,16 @@ class FilterHandler(fm.Loadable):
             try:
                 priority = filt.get('priority', d_priority)
                 if priority not in self.filters:
-                    raise ValueError(f"Priority has to be an int between 1 and 5! Filter: f{filt.get('search_text', d_search_text)}")
+                    raise ValueError(
+                        f"Priority has to be an int between 1 and 5! Filter: f{filt.get('search_text', d_search_text)}")
                 self.filters[priority].append(
                     basic.BasicFilter(filt.get('search_text', d_search_text),
-                                FilterType[filt.get('search_type', d_search_type.name).lower()],
-                                filt.get('search_ci', d_search_ci),
-                                filt.get('ignore_text', d_ignore_text),
-                                FilterType[filt.get('ignore_type', d_ignore_type.name).lower()],
-                                filt.get('ignore_ci', d_ignore_ci)
-                                )
+                                      FilterType[filt.get('search_type', d_search_type.name).lower()],
+                                      filt.get('search_ci', d_search_ci),
+                                      filt.get('ignore_text', d_ignore_text),
+                                      FilterType[filt.get('ignore_type', d_ignore_type.name).lower()],
+                                      filt.get('ignore_ci', d_ignore_ci)
+                                      )
                 )
             except Exception as e:
                 print(f"Could not load filter {filt.get('search_text', d_search_text)}. {e}")
