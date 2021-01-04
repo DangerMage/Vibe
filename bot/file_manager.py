@@ -71,6 +71,7 @@ class GlobalConfig(DefaultDict):
                 user = bot_global.guild.get_member(i)
                 if user is not None:
                     self.bypassed.append(user)
+            print("Bypassed users/roles:" + "\n".join(self.bypassed))
 
 
 class Loadable(object):
