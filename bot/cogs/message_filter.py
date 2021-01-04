@@ -24,9 +24,9 @@ class MessageFilter(commands.Cog):
         await self.filter_message(after)
 
     async def filter_message(self, message):
-        if message.author.id in bot_global.custom_config.bypassed:
+        if message.author in bot_global.custom_config.bypassed:
             return
-        if message.author.roles in bot_global.custom_config.bypassed:
+        if any(role in message.author.roles for role in bot_global.custom_config.bypassed):
             return
         filtered = bot_global.main_filter.filter_message(message.clean_content)
         if filtered is None:
