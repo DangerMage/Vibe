@@ -18,6 +18,7 @@ class GlobalConfig(DefaultDict):
         return {
             "filter": {
                 "find_all": True,
+                "bypass": [],
                 "warn_message": {
                     "footer": "If you believe this was a mistake, please contact a staff member.",
                     "text": "Hey! I found an inappropriate word in your message. Please be a bit nicer :)"
@@ -41,6 +42,7 @@ class GlobalConfig(DefaultDict):
         self.channel = None
         self.log_type = fh.MessageType.compact
         self.ignores = []
+        self.bypassed = []
 
     def update(self, update):
         super().update(update)
@@ -59,6 +61,16 @@ class GlobalConfig(DefaultDict):
                     self.ignores.append(fh.FilterType.compile_regex(filter_type, i, ic))
                 except Exception as e:
                     print(f"Could not setup regex for {i}. {e}")
+        self.bypassed = []
+        if bot_global.guild is not None:
+            for i in self.get("filter", "bypass"):
+                role = bot_global.guild.get_role(i)
+                if role is not None:
+                    self.bypassed.append(i)
+                    continue
+                user = bot_global.guild.get_user(i)
+                if user is not None:
+                    self.bypassed.append(user)
 
 
 class Loadable(object):
