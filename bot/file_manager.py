@@ -61,18 +61,6 @@ class GlobalConfig(DefaultDict):
                     self.ignores.append(fh.FilterType.compile_regex(filter_type, i, ic))
                 except Exception as e:
                     print(f"Could not setup regex for {i}. {e}")
-        self.bypassed = []
-        if bot_global.guild is not None:
-            for i in self.get("filter", "bypass"):
-                role = bot_global.guild.get_role(i)
-                if role is not None:
-                    self.bypassed.append(i)
-                    continue
-                user = bot_global.guild.get_member(i)
-                if user is not None:
-                    self.bypassed.append(user)
-            print("Bypassed users/roles:" + "\n".join(self.bypassed))
-
 
 class Loadable(object):
 
