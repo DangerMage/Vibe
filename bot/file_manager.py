@@ -68,7 +68,7 @@ class GlobalConfig(DefaultDict):
                 if role is not None:
                     self.bypassed.append(i)
                     continue
-                user = bot_global.guild.get_user(i)
+                user = bot_global.guild.get_member(i)
                 if user is not None:
                     self.bypassed.append(user)
 
