@@ -1,6 +1,7 @@
 from discord.ext import commands
 import bot as bot_global
 from bot.file_manager import FileProcessor
+from discord.utils import get
 
 
 class Utility(commands.Cog):
@@ -20,6 +21,14 @@ class Utility(commands.Cog):
         """Reloads filters"""
         FileProcessor.load()
         await ctx.send("Reloaded!")
+
+    @commands.command(name="agree")
+    async def agree(self, ctx):
+        if ctx.channel.id != 720394587792867378:
+            return
+        role = get(ctx.guild.roles, name="Verified")
+        await ctx.author.add_roles(role)
+        await ctx.message.delete()
 
 
 def setup(bot):
