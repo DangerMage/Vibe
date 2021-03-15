@@ -17,7 +17,7 @@ class MessageFilter(commands.Cog):
             return
         if message.channel.id == 720394587792867378 or message.author == self.bot.user:
             if message.content != "!agree":
-                message.delete(message)
+                await message.delete(message)
                 return
             return
         await self.filter_message(message)
