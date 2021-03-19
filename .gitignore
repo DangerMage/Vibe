@@ -3,3 +3,5 @@ config.toml
 /venv
 /rules
 __pycache__
+.vscode
+.vscode/settings.json
