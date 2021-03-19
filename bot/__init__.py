@@ -22,3 +22,8 @@ def bot_manager():
         return False
 
     return commands.check(predicate)
+
+async def is_bot_manager(author):
+    if manager_role is not None:
+        return manager_role in author.roles
+    return False
