@@ -15,7 +15,7 @@ class MessageFilter(commands.Cog):
     async def on_message(self, message):
         if message.guild is None or message.author == self.bot.user:
             return
-        if message.channel.id == bot_global.config["verify_channel_id"] or message.author == self.bot.user and not await bot_global.is_bot_manager(message.author):
+        if message.channel.id == bot_global.config["verify_channel_id"] and not await bot_global.is_bot_manager(message.author):
             if message.content != "!agree":
                 await message.delete()
                 return
