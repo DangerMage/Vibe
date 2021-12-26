@@ -16,3 +16,9 @@ bot_manager_role = 0
 
 # Bot owner
 owner_id = 0
+
+# verify channel id
+verify_channel_id = 0
+
+# verified role (needs to be exactly the same name)
+verified_role_name = "Verified"

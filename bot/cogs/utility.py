@@ -43,9 +43,9 @@ class Utility(commands.Cog):
                 
     @commands.command(name="agree")
     async def agree(self, ctx):
-        if ctx.channel.id != 720394587792867378:
+        if ctx.channel.id != bot_global.config["verify_channel_id"]:
             return
-        role = get(ctx.guild.roles, name="Verified")
+        role = get(ctx.guild.roles, name=bot_global.config["verified_role_name"])
         await ctx.author.add_roles(role)
         await ctx.message.delete()
 
